@@ -1,1 +1,52 @@
+# Terraform files and directories
+*.tfstate
+*.tfstate.*
+.terraform/
+.terraform.lock.hcl
+
+# Terraform plan output
+*.tfplan
+
+# Python cache and Flask-related
+__pycache__/
+*.pyc
+*.pyo
+*.pyd
+.env
+venv/
+.env.*
+
+# Node.js related
+node_modules/
+npm-debug.log
+yarn-error.log
+
+# Docker
+*.tar
+.dockerignore
+
+# Shell script logs or temp files
+*.log
+*.tmp
+
+# Screenshots and document outputs
+screenshots/
+submission.docx
+
+# OS generated files
+.DS_Store
+Thumbs.db
+
+# IDE/editor folders
+.vscode/
+.idea/
+*.iml
+
+# Backup files
+*~
+*.bak
+
+# Output binaries or archives
+*.zip
+*.out
 
