@@ -14,7 +14,3 @@ variable "key_name" {
   default = "vidit-key"
 }
 
-# part1-single-ec2/outputs.tf
-output "public_ip" {
-  value = aws_instance.app.public_ip
-}
