@@ -1,28 +1,81 @@
-## Part 3: Dockerized ECS Deployment
+### 🧱 Infrastructure Components
+- **ECR**: Two private repositories for Docker images.
+- **ECS**: ECS Cluster using Fargate with two services and task definitions.
+- **VPC**: Custom VPC with public subnets and security groups.
+- **ALB**: Application Load Balancer to route traffic to respective services.
 
-### Description
-Deploys Flask and Express containers to ECS Fargate with an Application Load Balancer.
+---
 
-### Steps:
-1. Build and push Docker images:
-```bash
-cd scripts
-bash build-and-push.sh
+### 📁 Directory Structure
+```
+part3-ecs-docker/
+├── docker/
+│   ├── flask-backend/Dockerfile
+│   └── express-frontend/Dockerfile
+├── terraform/
+│   ├── main.tf
+│   ├── variables.tf
+│   ├── outputs.tf
+│   ├── vpc.tf
+│   ├── ecs.tf
+│   ├── ecr.tf
+│   └── alb.tf
+├── scripts/
+│   └── build-and-push.sh
+└── README.md
 ```
 
-2. Deploy infrastructure:
+---
+
+### 🚀 Deployment Steps
+
+#### Step 1: Initialize Terraform
 ```bash
-cd ../part3-ecs-docker/terraform
+cd terraform
 terraform init
-terraform apply -auto-approve
 ```
 
-3. Cleanup:
+#### Step 2: Plan Infrastructure
 ```bash
-bash ../../scripts/cleanup.sh
+terraform plan -out=tfplan
 ```
 
-### Output
-Access the ALB DNS for:
-- Flask: `http://<alb-dns>/flask`
-- Express: `http://<alb-dns>/express`
+#### Step 3: Apply Infrastructure
+```bash
+terraform apply tfplan
+```
+
+#### Step 4: Build and Push Docker Images
+```bash
+cd ../scripts
+chmod +x build-and-push.sh
+./build-and-push.sh
+```
+
+---
+
+### 🔁 ALB Routing
+- **ALB DNS** is output after `terraform apply`
+- Port 80 routes:
+  - `/api` → Flask ECS Service
+  - `/` → Express ECS Service
+
+---
+
+### 📦 Outputs
+- ALB DNS name
+- ECR Repository URLs for both Flask and Express
+
+---
+
+### 📝 Notes
+- Make sure your AWS credentials and IAM roles allow full ECS/ECR/VPC/ALB management.
+- ECS Fargate is used for serverless container deployment.
+- Uses public subnets only; no NAT Gateway is required.
+
+---
+
+### 🧹 Cleanup
+```bash
+terraform destroy
+```
